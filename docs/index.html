@@ -1,0 +1,126 @@
+<html>
+<meta charset="UTF-8">
+<head>
+<title>Sunsets</title>
+<style type="text/css">
+
+button {
+  cursor:hand;
+  text-align: center;
+}
+.controls {
+  position:absolute;
+  display: inline-block;
+  width:100px;
+}
+input.control {
+  cursor: pointer;
+  border: 1px solid white;
+  width: 60px;
+  height: 20px;
+  text-align: center;
+}
+span.control {
+  cursor: pointer;
+  color: white;
+  background-color: #000000;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+button {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+</style>
+<script type="text/javascript">
+
+var images = [
+  "out.city.png",
+  "out.treeline.png",
+  "out.africa.png",
+  "out.water.png",
+  "out.cathedral.png",
+];
+var selected = 0;
+
+update = function() {
+  grad_str = ''
+  var col = 'ffffff';
+  var valid = false;
+  for (var c = 0; c < 6; c++) {
+    var g = document.getElementById('c' + c).value;
+    if (g != '000000') {
+      col = g;
+      if (grad_str != '') {
+        valid = true;
+        grad_str += ', '
+      }
+      grad_str += '#' + g + ' ' + (c * 20) + '%';
+    }
+  }
+  var grad = document.getElementById("grad");
+  if (valid) {
+    grad.style.background = '-webkit-linear-gradient(' + grad_str + ')';
+    grad.style.background = '-o-linear-gradient(' + grad_str + ')';
+    grad.style.background = '-moz-linear-gradient(' + grad_str + ')';
+    grad.style.background = 'linear-gradient(' + grad_str + ')';
+  } else {
+    grad.style.background = '#' + col;
+  }
+}
+
+move = function(addend) {
+  selected += addend;
+  var len = images.length;
+  selected = ((selected % len) + len) % len;
+  document.getElementById('image').src = images[selected];
+}
+
+blacken = function(c) {
+  document.getElementById('c' + c).color.fromString('000000');
+  update();
+}
+
+</script>
+<script type="text/javascript" src="jscolor.js"></script>
+</head>
+<body style="background-color:#000000" onload="move(0); update()">
+  <center>
+     <div id="grad" style="position:relative; display:inline-block;">
+       <img id="image" src="#"/>
+       <div class="controls" style="top:0%; left:101%">
+         <input id="c0" class="control color" onchange="update()"  value="ff0000"></input>&nbsp;
+         <span class="control" onclick="blacken(0)">✕</span>
+       </div>
+       <div class="controls" style="top:20%; left:101%">
+         <input id="c1" class="control color" onchange="update()"  value="000000"></input>&nbsp;
+         <span class="control" onclick="blacken(1)">✕</span>
+       </div>
+       <div class="controls" style="top:40%; left:101%">
+         <input id="c2" class="control color" onchange="update()"  value="000000"></input>&nbsp;
+         <span class="control" onclick="blacken(2)">✕</span>
+       </div>
+       <div class="controls" style="top:60%; left:101%">
+         <input id="c3" class="control color" onchange="update()"  value="000000"></input>&nbsp;
+         <span class="control" onclick="blacken(3)">✕</span>
+       </div>
+       <div class="controls" style="top:80%; left:101%">
+         <input id="c4" class="control color" onchange="update()"  value="000000"></input>&nbsp;
+         <span class="control" onclick="blacken(4)">✕</span>
+       </div>
+       <div class="controls" style="top:100%; left:101%">
+         <input id="c5" class="control color" onchange="update()"  value="ffff00"></input>&nbsp;
+         <span class="control" onclick="blacken(5)">✕</span>
+       </div>
+     </div>
+   <br/>
+   <br/>
+   <div>
+     <button onclick="move(-1)">◀</button>&nbsp;&nbsp;&nbsp;&nbsp;
+     <button onclick="move(1)">▶</button>
+  </center>
+
+</body>
+</html>
